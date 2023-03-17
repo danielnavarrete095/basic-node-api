@@ -16,43 +16,68 @@ const connectionPool = mysql.createPool({
     database: 'node_mysql'
 }).promise();
 
-export async function getClients() {
-    const [rows] = await connectionPool.query("SELECT * FROM client");
-    return rows;
-}
-
-async function getClient(id) {
-    const [rows] = await connectionPool.query("SELECT * FROM client WHERE idclient = ?", id);
+export const getClients = async () => {
+    const rows = await connectionPool.query(`
+        SELECT * 
+        FROM client
+    `);
     return rows[0];
 }
 
-async function addClient(_name, _city) {
-    const result = await connectionPool.query("INSERT INTO client SET ?", {name: _name, city: _city});
+export const getClient = async id => {
+    const row = await connectionPool.query(`
+        SELECT * 
+        FROM client 
+        WHERE idclient = ?`, id
+    );
+    return row[0][0];
+}
+
+export const addClient = async (_name, _city) => {
+    const result = await connectionPool.query(`
+        INSERT INTO client 
+        SET ?`,
+        {
+            name: _name,
+            city: _city
+        }
+    );
     return getClient(result[0].insertId);
 }
 
-async function updateClient(id, _name=null, _city=null) {
-    await connectionPool.query(`UPDATE client SET ? WHERE idclient=${id}`, {name: _name, city: _city});
+export const updateClient = async (id, _name=null, _city=null) => {
+    const result = await connectionPool.query(`
+        UPDATE client
+        SET ?
+        WHERE idclient=${id}`, 
+        {
+            name: _name, 
+            city: _city
+        }
+    );
     return getClient(id);
 }
 
-async function deleteClient(id) {
-    const result = await connectionPool.query(`DELETE FROM client WHERE idclient=${id}`);
+export const deleteClient = async id => {
+    const result = await connectionPool.query(`
+    DELETE FROM client
+    WHERE idclient=${id}`
+    );
     return result;
 }
 
-getClients().then((result) => {
-    console.log('Clients: ', result);
-});
-getClient(14).then((result) => {
-    console.log('Client with id 14: ', result);
-});
-addClient('Melissa', 'Chihuahua').then((result) => {
-    console.log('Client added: ', result);
-});
-updateClient(24, 'Dany', 'Orlando').then((result) => {
-    console.log('Client updated: ', result);
-});
-deleteClient(47).then((result) => {
-    console.log('Client with id 24 deleted');
-});
+// getClients().then((result) => {
+//     console.log('Clients: ', result);
+// });
+// getClient(14).then((result) => {
+//     console.log('Client with id 14: ', result);
+// });
+// addClient('Melissa', 'Chihuahua').then((result) => {
+//     console.log('Client added: ', result);
+// });
+// updateClient(24, 'Dany', 'Orlando').then((result) => {
+//     console.log('Client updated: ', result);
+// });
+// deleteClient(47).then((result) => {
+//     console.log('Client with id 24 deleted');
+// });

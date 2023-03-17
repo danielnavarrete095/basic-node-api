@@ -2,7 +2,7 @@
   "name": "basic_node_api",
   "version": "1.0.0",
   "description": "",
-  "type":"module",
+  "type": "module",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,7 +18,7 @@
     "mysql2": "^3.2.0"
   },
   "devDependencies": {
-    "express": "^4.18.2",
+    "express": "^5.0.0-beta.1",
     "nodemon": "^2.0.21"
   }
 }
