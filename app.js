@@ -1,7 +1,6 @@
-const express = require('express');
-const db = require('./database.js')
-
-const bodyParser = require('body-parser');
+import express from 'express';
+import {getClients} from './database.js';
+import bodyParser from 'body-parser';
 
 const PORT = process.env.PORT || 4000;
 
@@ -18,7 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/clients', async (req, res) => {
-    const clients = await db.getClients();
+    const clients = await getClients();
     res.send(clients);
 })
 

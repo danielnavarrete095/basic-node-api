@@ -1,5 +1,7 @@
-const mysql = require('mysql2');
-require('dotenv').config();
+import mysql from 'mysql2'
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 const DB_USER = process.env.MYSQL_USER;
 const DB_PASSWORD = process.env.MYSQL_PASSWORD;
@@ -14,7 +16,7 @@ const connectionPool = mysql.createPool({
     database: 'node_mysql'
 }).promise();
 
-async function getClients() {
+export async function getClients() {
     const [rows] = await connectionPool.query("SELECT * FROM client");
     return rows;
 }
@@ -54,5 +56,3 @@ updateClient(24, 'Dany', 'Orlando').then((result) => {
 deleteClient(47).then((result) => {
     console.log('Client with id 24 deleted');
 });
-
-module.exports={getClients}
