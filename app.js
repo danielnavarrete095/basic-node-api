@@ -23,7 +23,7 @@ app.get('/clients/:id', async (req, res) => {
     if(client !== undefined) {
         res.send(client);
     } else {
-        res.send(`Client ${clientId} doesn't exist`);
+        res.status(404).end(`Client ${clientId} not found`);
         console.log(client);
     }
 })
