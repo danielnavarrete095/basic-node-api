@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "nodemon app.js",
-    "start": "node app.js"
+    "serve": "nodemon /app.js",
+    "start": "node src/app.js"
   },
   "keywords": [],
   "author": "",
