@@ -1,5 +1,5 @@
-import mysql from 'mysql2'
-// import mysql from 'mysql2/promise'
+// import mysql from 'mysql2'
+import mysql from 'mysql2/promise'
 import dotenv from 'dotenv'
 
 dotenv.config();
@@ -12,14 +12,20 @@ const DB_PORT = process.env.MYSQL_PORT;
 
 if(!DB_USER || !DB_PASSWORD) throw "Cannot get db credentials";
 
-const connectionPool = mysql.createPool({
-    connectionLimit: 10,
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASSWORD,
-    port: DB_PORT,
-    database: DB_DATABASE
-}).promise();
+let connectionPool = null;
+try {
+    connectionPool = mysql.createPool({
+        connectionLimit: 10,
+        host: DB_HOST,
+        user: DB_USER,
+        password: DB_PASSWORD,
+        port: DB_PORT,
+        database: DB_DATABASE
+    });
+    console.log('Connected to DB');
+} catch(err) {
+    throw err;
+}
 
 export const getClients = async () => {
     const rows = await connectionPool.query(`
