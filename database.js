@@ -6,15 +6,19 @@ dotenv.config();
 
 const DB_USER = process.env.MYSQL_USER;
 const DB_PASSWORD = process.env.MYSQL_PASSWORD;
+const DB_DATABASE = process.env.MYSQL_DATABASE;
+const DB_HOST = process.env.MYSQL_HOST;
+const DB_PORT = process.env.MYSQL_PORT;
 
 if(!DB_USER || !DB_PASSWORD) throw "Cannot get db credentials";
 
 const connectionPool = mysql.createPool({
     connectionLimit: 10,
-    host: 'localhost',
+    host: DB_HOST,
     user: DB_USER,
     password: DB_PASSWORD,
-    database: 'node_mysql'
+    port: DB_PORT,
+    database: DB_DATABASE
 }).promise();
 
 export const getClients = async () => {
