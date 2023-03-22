@@ -53,6 +53,8 @@ export const addClient = async (_name, _city) => {
             city: _city
         }
     );
+    console.log(`name: ${_name}, city: ${_city}`);
+    console.log(result);
     return getClient(result[0].insertId);
 }
 
