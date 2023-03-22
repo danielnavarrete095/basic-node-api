@@ -23,6 +23,7 @@ router.get('/clients/:id', async (req, res) => {
 
 router.post('/clients', async (req, res) => {
     const {name, city} = req.body;
+    console.log(`Add client\nname: ${name}, city: ${city}`);
     const result = await addClient(name, city);
     console.log(result);
     res.send(result);
