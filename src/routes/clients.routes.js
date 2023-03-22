@@ -5,6 +5,8 @@ const router = Router();
 
 router.get('/clients', async (req, res) => {
     console.log('Incoming GET request');
+    console.log(req.method);
+    console.log(req.url);
     const clients = await getClients();
     console.log(clients);
     res.send(clients);
@@ -12,6 +14,8 @@ router.get('/clients', async (req, res) => {
 
 router.get('/clients/:id', async (req, res) => {
     console.log('Incoming GET request');
+    console.log(req.method);
+    console.log(req.url);
     const clientId = req.params.id;
     const client = await getClient(clientId);
     if(client !== undefined) {
