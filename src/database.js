@@ -12,7 +12,7 @@ const DB_PORT = process.env.MYSQL_PORT;
 
 if(!DB_USER || !DB_PASSWORD) throw "Cannot get db credentials";
 
-let connectionPool = null;
+export let connectionPool = null;
 try {
     connectionPool = mysql.createPool({
         connectionLimit: 10,
