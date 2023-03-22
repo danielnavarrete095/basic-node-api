@@ -15,7 +15,7 @@ app.get('/', async (req, res) => {
     res.send(result[0]);
 })
 
-app.use(clientsRoutes);
+app.use('/api', clientsRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
