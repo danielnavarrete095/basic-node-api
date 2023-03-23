@@ -8,11 +8,9 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async (req, res) => {
     const [result] = await connectionPool.query('SELECT "Server is ON" as RESULT');
-    console.log(result[0]);
     res.send(result[0]);
 })
 

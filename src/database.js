@@ -53,7 +53,6 @@ export const addClient = async (_name, _city) => {
             city: _city
         }
     );
-    console.log(result);
     return getClient(result[0].insertId);
 }
 
@@ -77,19 +76,3 @@ export const deleteClient = async id => {
     );
     return result;
 }
-
-// getClients().then((result) => {
-//     console.log('Clients: ', result);
-// });
-// getClient(14).then((result) => {
-//     console.log('Client with id 14: ', result);
-// });
-// addClient('Melissa', 'Chihuahua').then((result) => {
-//     console.log('Client added: ', result);
-// });
-// updateClient(24, 'Dany', 'Orlando').then((result) => {
-//     console.log('Client updated: ', result);
-// });
-// deleteClient(47).then((result) => {
-//     console.log('Client with id 24 deleted');
-// });
