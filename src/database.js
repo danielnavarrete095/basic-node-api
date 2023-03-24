@@ -1,78 +1,101 @@
-// import mysql from 'mysql2'
-import mysql from 'mysql2/promise'
 import dotenv from 'dotenv'
+import {PrismaClient} from '@prisma/client'
+
+export const prisma = new PrismaClient();
+
+const query = async () => {
+    const test = await prisma.test.createMany({
+        data: [
+            {name: 'Daniel Navarrete', city: 'Philadelphia'},
+            {name: 'Melissa Bustamante', city: 'Michigan'},
+        ]
+    })
+    console.log(test);
+    const alltest = await prisma.test.findMany();
+    console.log(alltest);
+    
+    const onetest = await prisma.test.findUnique({
+        where: {
+            idclient: 3
+        }
+    });
+    console.log(onetest);
+
+    const updateClient = await prisma.test.update({
+        where: {
+            idclient: 8
+        },
+        data: {
+            // name: 'Selena Quintanilla',
+            city: 'Corpus'
+        }
+    });
+    console.log(updateClient);
+
+    const  deleteClient = await prisma.test.deleteMany({
+        where: {
+            name: {
+                contains: 'Melissa',
+            },
+        }
+    })
+    console.log(deleteClient);
+}
 
 dotenv.config();
 
-const DB_USER = process.env.MYSQL_USER;
-const DB_PASSWORD = process.env.MYSQL_PASSWORD;
-const DB_DATABASE = process.env.MYSQL_DATABASE;
-const DB_HOST = process.env.MYSQL_HOST;
-const DB_PORT = process.env.MYSQL_PORT;
-
-if(!DB_USER || !DB_PASSWORD) throw "Cannot get db credentials";
-
-export let connectionPool = null;
-try {
-    connectionPool = mysql.createPool({
-        connectionLimit: 10,
-        host: DB_HOST,
-        user: DB_USER,
-        password: DB_PASSWORD,
-        port: DB_PORT,
-        database: DB_DATABASE
-    });
-    console.log('Connected to DB');
-} catch(err) {
-    throw err;
-}
-
 export const getClients = async () => {
-    const rows = await connectionPool.query(`
-        SELECT * 
-        FROM client
-    `);
-    return rows[0];
+    const clients = await prisma.client.findMany();
+    return clients;
 }
 
-export const getClient = async id => {
-    const row = await connectionPool.query(`
-        SELECT * 
-        FROM client 
-        WHERE idclient = ?`, id
-    );
-    return row[0][0];
+export const getClient = async _id => {
+    const client = await prisma.client.findUnique({
+        where: {
+            id: _id,
+        }
+    });
+    return client;
 }
 
 export const addClient = async (_name, _city) => {
-    const result = await connectionPool.query(`
-        INSERT INTO client 
-        SET ?`,
-        {
+    const client = await prisma.client.create({
+        data: {
             name: _name,
-            city: _city
+            city: _city,
         }
-    );
-    return getClient(result[0].insertId);
+    });
+    return client;
 }
 
-export const updateClient = async (id, _name=null, _city=null) => {
-    const result = await connectionPool.query(`
-        UPDATE client
-        SET ?
-        WHERE idclient=${id}`, 
-        {
-            name: _name, 
-            city: _city
-        }
-    );
-    return getClient(id);
+export const updateClient = async (_id, _name=null, _city=null) => {
+    let _data = {}
+    if(_name) _data.name = _name;
+    if(_city) _data.city = _city;
+    let client = null;
+    try{
+        client = await prisma.client.update({
+            where: {
+                id: _id,
+            },
+            data: _data,
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+    return client;
 }
 
-export const deleteClient = async id => {
-    const result = await connectionPool.query(`
-    DELETE FROM client
-    WHERE idclient=${id}`
-    );
-    return result;
+export const deleteClient = async _id => {
+    let client = null;
+    try {
+        client = await prisma.client.delete({
+            where: {
+                id: _id,
+            }
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+    return client;
 }

@@ -11,8 +11,8 @@ router.get('/clients', async (req, res) => {
 
 router.get('/clients/:id', async (req, res) => {
     const clientId = req.params.id;
-    const client = await getClient(clientId);
-    if(client !== undefined) {
+    const client = await getClient(parseInt(clientId));
+    if(client !== null) {
     console.log(client);
     res.send(client);
     } else {
@@ -30,15 +30,21 @@ router.post('/clients', async (req, res) => {
 router.put('/clients/:id', async (req, res) => {
     const clientId = req.params.id;
     const {name, city} = req.body;
-    const result = await updateClient(clientId, name, city);
-    res.send(result);
+    const result = await updateClient(parseInt(clientId), name, city);
+    if (result === null)
+        res.send(`Client with id ${clientId} doesn\'t exist`);
+    else
+        res.send(result);
 });
 
 
 router.delete('/clients/:id', async (req, res) => {
     const clientId = req.params.id;
-    const result = await deleteClient(clientId);
-    res.send(result);
+    const result = await deleteClient(parseInt(clientId));
+    if (result === null)
+        res.send(`Client with id ${clientId} doesn\'t exist`);
+    else
+        res.send(result);
 });
 
 export default router;
